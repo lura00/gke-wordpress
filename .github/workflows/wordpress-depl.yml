@@ -3,7 +3,7 @@ name: Build and Push Docker Image to GCR
 on:
   push:
     branches:
-      - test-feature
+      - main
 
 jobs:
   build:
