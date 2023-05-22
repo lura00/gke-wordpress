@@ -50,7 +50,7 @@ jobs:
           gcloud components install gke-gcloud-auth-plugin
       - name: Configure kubectl
         run: |
-          gcloud container clusters get-credentials  ${{ GKE_PROJECT_ID }}-gke --zone europe-west1-c --project ${{ GKE_PROJECT_ID }}
+          gcloud container clusters get-credentials  ${{ secrets.GKE_PROJECT_ID }}-gke --zone europe-west1-c --project ${{ secrets.GKE_PROJECT_ID }}
       - name: checkout repo
         uses: actions/checkout@v2.3.4
       - name: Deploy application
