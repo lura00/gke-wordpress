@@ -26,29 +26,26 @@ spec:
       storage: 20Gi
 ---
 apiVersion: apps/v1
-kind: HelmRelease
+kind: Deployment
 metadata:
   name: wordpress
   labels:
     app: wordpress
 spec:
-  hpa:
-    maxReplicas: 6
-    minReplicas: 1
-    behavior:
-      scaleDown:
-        stabilizationWindowSeconds: 100
-        policies:
-          - type: pods
-            value: 2
-            periodSeconds: 10
-      scaleUp:
-        stabilizationWindowSeconds: 100
-        policies:
-          - type: pods
-            value: 2
-            periodSeconds: 10
-        selectPolicies: max
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 100
+      policies:
+      - type: pods
+        value: 2
+        periodSeconds: 10
+    scaleUp:
+      stabilizationWindowSeconds: 100
+      policies:
+      - type: pods
+        value: 2
+        periodSeconds: 10
+      selectPolicies: max
   selector:
     matchLabels:
       app: wordpress
