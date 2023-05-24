@@ -85,7 +85,7 @@ spec:
         persistentVolumeClaim:
           claimName: wp-pv-claim
 ---
-apiVersion: autoscaling/v2
+apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: wordpress
@@ -96,22 +96,4 @@ spec:
     name: wordpress
   minReplicas: 1
   maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
-status:
-  observedGeneration: 1
-  lastScaleTime: 30
-  currentReplicas: 1
-  desiredReplicas: 1
-  currentMetrics:
-  - type: Resource
-    resource:
-      name: cpu
-      current:
-        averageUtilization: 0
-        averageValue: 0
+  targetCPUUtilizationPercentage: 50
