@@ -32,20 +32,20 @@ metadata:
   labels:
     app: wordpress
 spec:
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 100
-      policies:
-      - type: pods
-        value: 2
-        periodSeconds: 10
-    scaleUp:
-      stabilizationWindowSeconds: 100
-      policies:
-      - type: pods
-        value: 2
-        periodSeconds: 10
-      selectPolicies: max
+  # behavior:
+  #   scaleDown:
+  #     stabilizationWindowSeconds: 100
+  #     policies:
+  #     - type: pods
+  #       value: 2
+  #       periodSeconds: 10
+  #   scaleUp:
+  #     stabilizationWindowSeconds: 100
+  #     policies:
+  #     - type: pods
+  #       value: 2
+  #       periodSeconds: 10
+  #     selectPolicies: max
   selector:
     matchLabels:
       app: wordpress
@@ -71,6 +71,11 @@ spec:
               key: password
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
           name: wordpress
         volumeMounts:
         - name: wordpress-persistent-storage
@@ -79,16 +84,34 @@ spec:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
           claimName: wp-pv-claim
-# ---
-# apiVersion: autoscaling/v1
-# kind: HorizontalPodAutoscaler
-# metadata:
-#   name: wordpress
-# spec:
-#   scaleTargetRef:
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     name: wordpress
-#   minReplicas: 1
-#   maxReplicas: 10
-#   targetCPUUtilizationPercentage: 50
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: wordpress-apache
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: wordpress-apache
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+status:
+  observedGeneration: 1
+  lastScaleTime: 30
+  currentReplicas: 1
+  desiredReplicas: 1
+  currentMetrics:
+  - type: Resource
+    resource:
+      name: cpu
+      current:
+        averageUtilization: 0
+        averageValue: 0
