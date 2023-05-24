@@ -72,7 +72,7 @@ spec:
         persistentVolumeClaim:
           claimName: wp-pv-claim
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2bet2
 kind: HorizontalPodAutoscaler
 metadata:
   name: store-autoscale
