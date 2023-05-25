@@ -48,6 +48,9 @@ spec:
       containers:
       - image: wordpress:4.8-apache
         name: wordpress
+        resources:
+          requests:
+            cpu: "250m"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-mysql
@@ -59,11 +62,6 @@ spec:
         ports:
         - containerPort: 80
           name: wordpress
-        resources:
-          # You must specify requests for CPU to autoscale
-          # based on CPU utilization
-          requests:
-            cpu: "250m"
         volumeMounts:
         - name: wordpress-persistent-storage
           mountPath: /var/www/html
