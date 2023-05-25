@@ -32,7 +32,7 @@ metadata:
   labels:
     app: wordpress
 spec:
-  replicas: 10
+  replicas: 4
   selector:
     matchLabels:
       app: wordpress
