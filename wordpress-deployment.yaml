@@ -70,25 +70,30 @@ spec:
         persistentVolumeClaim:
           claimName: wp-pv-claim
 ---
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: store-autoscale
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: store-autoscale
-  minReplicas: 1
-  maxReplicas: 10
-  metrics:
-  - type: Object
-    object:
-      describedObject:
-        kind: Service
-        name: store-autoscale
-      metric:
-        name: "autoscaling.googleapis.com|gclb-capacity-utilization"
-      target:
-        averageValue: 70
-        type: AverageValue
+apiVersion: v1
+items:
+- apiVersion: autoscaling/v1
+  kind: HorizontalPodAutoscaler
+  metadata:
+    creationTimestamp: ...
+    name: wordpress-hpa
+    namespace: default
+    resourceVersion: "664"
+    selfLink: ...
+    uid: ...
+  spec:
+    maxReplicas: 10
+    minReplicas: 1
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: wordpress-hpa
+    targetCPUUtilizationPercentage: 50
+  status:
+    currentReplicas: 0
+    desiredReplicas: 0
+kind: List
+metadata: {}
+resourceVersion: ""
+selfLink: ""
+
