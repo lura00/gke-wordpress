@@ -32,7 +32,7 @@ metadata:
   labels:
     app: wordpress
 spec:
-  replicas: 1
+  replicas: 20
   selector:
     matchLabels:
       app: wordpress
@@ -48,9 +48,9 @@ spec:
       containers:
       - image: wordpress:4.8-apache
         name: wordpress
-        resources:
-          requests:
-            cpu: "250m"
+        # resources:
+        #   requests:
+        #     cpu: "250m"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-mysql
@@ -69,31 +69,31 @@ spec:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:
           claimName: wp-pv-claim
----
-apiVersion: v1
-items:
-- apiVersion: autoscaling/v1
-  kind: HorizontalPodAutoscaler
-  metadata:
-    creationTimestamp: ...
-    name: wordpress-hpa
-    namespace: default
-    resourceVersion: "664"
-    selfLink: ...
-    uid: ...
-  spec:
-    maxReplicas: 10
-    minReplicas: 1
-    scaleTargetRef:
-      apiVersion: apps/v1
-      kind: Deployment
-      name: wordpress-hpa
-    targetCPUUtilizationPercentage: 50
-  status:
-    currentReplicas: 0
-    desiredReplicas: 0
-kind: List
-metadata: {}
-resourceVersion: ""
-selfLink: ""
+# ---
+# apiVersion: v1
+# items:
+# - apiVersion: autoscaling/v1
+#   kind: HorizontalPodAutoscaler
+#   metadata:
+#     creationTimestamp: ...
+#     name: wordpress-hpa
+#     namespace: default
+#     resourceVersion: "664"
+#     selfLink: ...
+#     uid: ...
+#   spec:
+#     maxReplicas: 10
+#     minReplicas: 1
+#     scaleTargetRef:
+#       apiVersion: apps/v1
+#       kind: Deployment
+#       name: wordpress-hpa
+#     targetCPUUtilizationPercentage: 50
+#   status:
+#     currentReplicas: 0
+#     desiredReplicas: 0
+# kind: List
+# metadata: {}
+# resourceVersion: ""
+# selfLink: ""
 
